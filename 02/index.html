@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.5/css/bulma.min.css">
+    <title>02 - Vuejs Test</title>
+</head>
+<body>  
+    <div id="app">
+        <div :class="[{'has-background-danger' : hasError, 'has-background-primary' : !hasError}, color]">
+            <div class="container">
+                <section class="section">
+                    <p>Hola que pasa</p>
+                    <input type="text" v-model="color">
+                    <button class="button is-white is-small" @click="hasError = !hasError">Cambiar</button>
+                </section>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="02.js"></script>
+</body>
+</html>
