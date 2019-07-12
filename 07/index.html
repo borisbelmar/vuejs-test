@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>07 - Vuex</title>
+    <title>07 - Vuex (Store, mapState, mapMutation, mapActions)</title>
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
     <script src="https://unpkg.com/vuex@3.1.1/dist/vuex.js"></script>
 </head>
@@ -14,24 +14,45 @@
     </div>
 
     <script>
-
         Vue.component('titulo', {
-            template:
+            template: //html
             `
             <div>
-                <h1>numero {{ $store.state.numero }}</h1>
+                <h1>numero con mapState: {{ numero }}</h1>
+                <h3>numero sin mapState: {{ $store.state.numero }}</h3>
                 <hijo></hijo>
             </div>
-            `
+            `,
+            computed: {
+                ...Vuex.mapState(['numero'])
+            }
         });
 
         Vue.component('hijo', {
-            template:
+            template: //html
             `
             <div>
-                <button @click="$store.commit('aumentar')">+</button>
+                <p>numero con mapState: {{ numero }}</p>
+                <div>
+                    <span>Mutations con mapMutation</span>
+                    <button @click="aumentar">+</button>
+                    <button @click="disminuir">-</button>
+                    <button @click="restar(3)">Restar 3</button>
+                </div>
+                <div>
+                    <span>Mutations sin mapMutation</span>
+                    <button @click="$store.commit('aumentar')">+</button>
+                    <button @click="$store.commit('disminuir')">-</button>
+                </div>
             </div>
-            `
+            `,
+            computed: {
+                //Rest/Spread Properties
+                ...Vuex.mapState(['numero'])
+            },
+            methods: {
+                ...Vuex.mapMutations(['aumentar', 'disminuir', 'restar'])
+            }
         });
 
         const store = new Vuex.Store({
@@ -43,6 +64,12 @@
             mutations: {
                 aumentar(state) {
                     state.numero++
+                },
+                disminuir(state) {
+                    state.numero--
+                },
+                restar(state, n) {
+                    state.numero -= n
                 }
             }
         });
