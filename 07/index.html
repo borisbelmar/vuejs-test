@@ -44,21 +44,27 @@
                     <button @click="$store.commit('aumentar')">+</button>
                     <button @click="$store.commit('disminuir')">-</button>
                 </div>
+                <button @click="getCursos">Obtener Cursos</button>
+                <ul>
+                    <li v-for="item in cursos">{{item.nombre}}</li>
+                </ul>
             </div>
             `,
             computed: {
                 //Rest/Spread Properties
-                ...Vuex.mapState(['numero'])
+                ...Vuex.mapState(['numero', 'cursos'])
             },
             methods: {
-                ...Vuex.mapMutations(['aumentar', 'disminuir', 'restar'])
+                ...Vuex.mapMutations(['aumentar', 'disminuir', 'restar']),
+                ...Vuex.mapActions(['getCursos'])
             }
         });
 
         const store = new Vuex.Store({
             // Datos globales
             state: {
-                numero: 10
+                numero: 10,
+                cursos: []
             },
             // Métodos globales
             mutations: {
@@ -70,6 +76,16 @@
                 },
                 restar(state, n) {
                     state.numero -= n
+                },
+                fillCursos(state, cursosAction) {
+                    state.cursos = cursosAction;
+                }
+            },
+            actions: {
+                getCursos: async function ( {commit} ) {
+                    const data = await fetch('datos.json');
+                    const cursos = await data.json();
+                    commit('fillCursos', cursos);
                 }
             }
         });
